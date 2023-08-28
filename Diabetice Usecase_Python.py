@@ -114,19 +114,34 @@ from sklearn.metrics import accuracy_score
 model = RandomForestClassifier()
 
 # Train the model on the training data
-model.fit(train_data.drop("Diabetes_Chance_Level", axis=1), train_data["Diabetes_Chance_Level"])
+fit = model.fit(train_data.drop("Diabetes_Chance_Level", axis=1), train_data["Diabetes_Chance_Level"])
 
 # Predict the labels of the testing data
 predictions = model.predict(test_data.drop("Diabetes_Chance_Level", axis=1))
 
 # Calculate the accuracy
 accuracy = accuracy_score(predictions, test_data["Diabetes_Chance_Level"])
+recall = recall_score(predictions, test_data["Diabetes_Chance_Level"], average='weighted')
+precision = precision_score(predictions, test_data["Diabetes_Chance_Level"], average='weighted')
 
 print("Accuracy:", accuracy)
+print("Recall:", recall)
+print("Precision:", precision)
 
+X = df[['Age', 'Weight_kg', 'Height_cm', 'SBP', 'DBP', 'Family_History',
+       'Heart_Rate_bpm', 'Glucose_Level_Before_mg/dL',
+       'Glucose_Level_After_mg/dL', 'BMI', 'Overweight', 'Obese']]
+y = df['Diabetes_Chance_Level']
+
+# Get feature importances
+feature_importances = model.feature_importances_
+
+feature_importance_df = pd.DataFrame({'Feature': X.columns, 'Importance': feature_importances})
+feature_importance_df = feature_importance_df.sort_values(by='Importance', ascending=False)
+feature_importance_df
 
 import pickle
 
 # Creating a pickle file for the classifier
 filename = 'C:/Users/ASUS/OneDrive/MineTasks/H_C/diabetes-prediction-rfc-model.pkl'
-pickle.dump(model, open(filename, 'wb'))
+pickle.dump(fit, open(filename, 'wb'))
