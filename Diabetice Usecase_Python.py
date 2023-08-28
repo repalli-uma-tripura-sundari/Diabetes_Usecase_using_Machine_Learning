@@ -6,6 +6,7 @@ import pandas as pd
 df = pd.read_csv("C:/Users/ASUS/OneDrive/MineTasks/H_C/Actual_Data.csv")
 df.head(10)
 
+df.drop_duplicates()
 
 df.rename(columns = {'Weight':'Weight_kg'}, inplace = True)
 df.rename(columns = {'Height':'Height_cm'}, inplace = True)
@@ -13,6 +14,7 @@ df.rename(columns = {'Glucose_Level_Before':'Glucose_Level_Before_mg/dL'}, inpla
 df.rename(columns = {'Glucose_Level_After':'Glucose_Level_After_mg/dL'}, inplace = True)
 df.rename(columns = {'Heart_Rate':'Heart_Rate_bpm'}, inplace = True)
 
+df.isna().sum()
 
 import numpy as np
 # Replace infinite values with zero
