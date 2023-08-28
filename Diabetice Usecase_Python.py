@@ -49,6 +49,16 @@ conditions = [
 ]
 values = ['Normal','Elevated','Hyepertension']
 df['BP_Group'] = np.select(conditions,values)
+
+conditions = [
+    (df['Glucose_Level_Before_mg/dL']<100) & (df['Glucose_Level_After_mg/dL']<140),
+    ((df['Glucose_Level_Before_mg/dL']>=100) & (df['Glucose_Level_Before_mg/dL']<=125) | 
+     (df['Glucose_Level_After_mg/dL']>=140) & (df['Glucose_Level_After_mg/dL']<=199)),
+    (df['Glucose_Level_Before_mg/dL']>=126) | (df['Glucose_Level_After_mg/dL']>=200)
+]
+values = ['Normal','Prediabetes','Diabete']
+df['Glucose_Level'] = np.select(conditions,values)
+
 df['HeartRate_Group'] = pd.cut(df['Heart_Rate_bpm'], bins = [-float('inf'),60,81, float('inf')], labels = ['Low','Normal','High'])
 
 df.head(10)
